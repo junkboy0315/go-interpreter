@@ -1,12 +1,15 @@
 package token
 
-type TokenType string
+// Type はトークンの種類を表す文字列
+type Type string
 
+// Token は`トークンの種類`と`実際のコードの文字列`を持つ
 type Token struct {
-	Type    TokenType
+	Type    Type
 	Literal string
 }
 
+// Typeの値
 const (
 	ILLEGAL = "ILLEGAL" // 解析不能な字句
 	EOF     = "EOF"
