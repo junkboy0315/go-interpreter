@@ -27,7 +27,41 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		if l.peekChar() == '=' {
+			// `==`の場合
+			firstChar := l.ch
+			l.readChar()
+			secondChar := l.ch
+			literal := string(firstChar) + string(secondChar)
+			tok = token.Token{Type: token.EQ, Literal: literal}
+		} else {
+			// `=`の場合
+			tok = newToken(token.ASSIGN, l.ch)
+		}
+	case '+':
+		tok = newToken(token.PLUS, l.ch)
+	case '-':
+		tok = newToken(token.MINUS, l.ch)
+	case '!':
+		if l.peekChar() == '=' {
+			// `!=`の場合
+			firstChar := l.ch
+			l.readChar()
+			secondChar := l.ch
+			literal := string(firstChar) + string(secondChar)
+			tok = token.Token{Type: token.NOTEQ, Literal: literal}
+		} else {
+			// `!`の場合
+			tok = newToken(token.BANG, l.ch)
+		}
+	case '/':
+		tok = newToken(token.SLASH, l.ch)
+	case '*':
+		tok = newToken(token.ASTERISK, l.ch)
+	case '<':
+		tok = newToken(token.LT, l.ch)
+	case '>':
+		tok = newToken(token.GT, l.ch)
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
 	case '(':
@@ -36,8 +70,6 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.RPAREN, l.ch)
 	case ',':
 		tok = newToken(token.COMMA, l.ch)
-	case '+':
-		tok = newToken(token.PLUS, l.ch)
 	case '{':
 		tok = newToken(token.LBRACE, l.ch)
 	case '}':
@@ -73,6 +105,14 @@ func (l *Lexer) readChar() {
 	}
 	l.position = l.readPosition
 	l.readPosition++
+}
+
+// 位置情報は更新せずに、次の文字を先読みする
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	}
+	return l.input[l.readPosition]
 }
 
 // 現在位置から、次の非英字の直前までを、文字列で返す

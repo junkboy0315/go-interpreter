@@ -18,8 +18,18 @@ const (
 	INT = "INT" // 整数 1, 2, 3 など
 
 	// 演算子
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
+
+	LT = "<"
+	GT = ">"
+
+	EQ    = "=="
+	NOTEQ = "!="
 
 	// デリミタ
 	COMMA     = ","
@@ -30,17 +40,27 @@ const (
 	RBRACE    = "}"
 
 	// ユーザ定義の識別子
-	IDENT = "IDENT" // x, y など
+	IDENT = "IDENT" // x, y, myVal など
 
 	// 定義済みの識別子（キーワード）
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 )
 
 // 定義済みの識別子とトークンの種類の関連付け
 var tokenTypeByKeyword = map[string]Type{
-	"fn":  FUNCTION,
-	"let": LET,
+	"fn":     FUNCTION,
+	"let":    LET,
+	"true":   TRUE,
+	"false":  FALSE,
+	"if":     IF,
+	"else":   ELSE,
+	"return": RETURN,
 }
 
 // LookupTokenType は、与えられた文字列を基に、トークンの種類を判断して返す
